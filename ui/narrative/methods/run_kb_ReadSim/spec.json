@@ -1,54 +1,279 @@
 {
-    "ver": "0.0.1",
-    "authors": [
-        "man4ish_gupta"
-    ],
-    "contact": "",
-    "categories": ["active"],
-    "widgets": {
-        "input": null,
-        "output": null
-    },
-    "parameters": [ 
-        {
-            "id": "parameter_1",
-            "optional": true,
-            "advanced": false,
+  "ver": "0.0.1",
+  "authors" : [ "man4ish" ],
+  "contact" : "help@kbase.us",
+  "visble" : true,
+  "categories" : ["active", "comparative_genomics", "util"],
+  "widgets" : {
+    "input" : null,
+    "output" : "no-display"
+  },
+  "parameters" : [ {
+    "id" : "assembly_or_genome",
+    "optional" : true,
+    "advanced" : false,
+    "allow_multiple" : false,
+    "default_values" : [ "" ],
+    "field_type" : "text",
+    "text_options" : {
+      "valid_ws_types" : [ "KBaseMatrices.Genomes" ]
+    }
+  },
+  {
+            "id": "base_error_rate",
+            "optional": false,
+            "advanced": true,
             "allow_multiple": false,
-            "default_values": [ "" ],
+            "default_values": [ "0.02" ],
             "field_type": "text",
             "text_options": {
-                "valid_ws_types": [ ]
+                "validate_as": "int",
+                "min_integer" : 0
             }
+  },
+  {
+            "id": "outer_distance",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "500" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "int",
+                "min_integer" : 0
+            }
+  },
+  {
+            "id": "standard_deviation",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "50" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "int",
+                "min_integer" : 0
+            }
+  },
+  {
+            "id": "num_read_pairs",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "1000000" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "int",
+                "min_integer" : 0
+            }
+  },
+  {
+            "id": "len_first_read",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "70" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "int",
+                "min_integer" : 0
+            }
+  },
+  {
+            "id": "len_second_read",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "70" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "int",
+                "min_integer" : 0
+            }
+  },
+  {
+            "id": "mutation_rate",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0.0010" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "int",
+                "min_integer" : 0
+            }
+  },
+  {
+            "id": "frac_indels",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0.15" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "int",
+                "min_integer" : 0
+            }
+  },
+  {
+            "id": "haplotype_mode",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "int",
+                "min_integer" : 0
+            }
+  },
+  {
+    "id" : "input_sample_set",
+    "optional" : false,
+    "advanced" : false,
+    "allow_multiple" : false,
+    "default_values" : [ "" ],
+    "field_type" : "text",
+    "text_options" : {
+      "valid_ws_types" : ["KBaseSets.SampleSet"]
+     }
+   },
+   {
+    "id" : "strain_info",
+    "optional" : false,
+    "advanced" : false,
+    "allow_multiple" : false,
+    "default_values" : [ "" ],
+    "field_type" : "textsubdata",
+    "textsubdata_options" : {
+      "subdata_selection": {
+        "parameter_id" : "input_sample_set",
+        "subdata_included" : ["samples/[*]/id", "samples/[*]/name"],
+        "path_to_subdata": ["samples"],
+        "selection_id" : "name",
+        "selection_description" : ["id"]
+      },
+      "multiselection":false,
+      "show_src_obj":true,
+      "allow_custom":false
+    }
+  },
+  {
+    "id" : "output_variant_object",
+    "optional" : false,
+    "advanced" : false,
+    "allow_multiple" : false,
+    "default_values" : [ "" ],
+    "field_type" : "text",
+    "text_options" : {
+      "valid_ws_types" : [ "KBaseCollections.FeatureSet" ],
+      "is_output_name":true
+    }
+  }, {
+    "id" : "output_read_object",
+    "optional" : false,
+    "advanced" : false,
+    "allow_multiple" : false,
+    "default_values" : [ "" ],
+    "field_type" : "text",
+    "text_options" : {
+      "valid_ws_types" : [ "KBaseCollections.FeatureSet" ],
+      "is_output_name":true
+    }
+  } ],
+  "behavior" : {
+    "service-mapping" : {
+      "url" : "",
+      "name" : "kb_ReadSim",
+      "method" : "run_kb_ReadSim",
+      "input_mapping" : [
+        {
+          "input_parameter": "assembly_or_genome",
+          "target_property": "assembly_or_genome",
+          "target_type_transform": "resolved-ref"
+        },
+        {
+           "input_parameter": "base_error_rate",
+           "target_property": "base_error_rate"
+
+        },
+        {
+            "input_parameter": "outer_distance",
+            "target_property": "outer_distance"
+
+        },
+        {
+            "input_parameter": "standard_deviation",
+            "target_property": "standard_deviation"
+
+        },
+         {
+           "input_parameter": "num_read_pairs",
+           "target_property": "num_read_pairs"
+
+        },
+        {
+            "input_parameter": "len_first_read",
+            "target_property": "len_first_read"
+
+        },
+        {
+            "input_parameter": "len_second_read",
+            "target_property": "len_second_read"
+
+        },
+        {
+            "input_parameter": "mutation_rate",
+            "target_property": "mutation_rate"
+
+        },
+         {
+           "input_parameter": "frac_indels",
+           "target_property": "frac_indels"
+
+        },
+        {
+            "input_parameter": "haplotype_mode",
+            "target_property": "haplotype_mode"
+
+        },
+        {
+            "input_parameter": "input_sample_set",
+            "target_property": "input_sample_set",
+            "target_type_transform": "resolved-ref"
+        },
+        {
+            "input_parameter": "strain_info",
+            "target_property": "strain_info"
+        },
+        {
+          "input_parameter": "output_variant_object",
+          "target_property": "output_variant_object"
+        },
+        {
+          "input_parameter": "output_read_object",
+          "target_property": "output_read_object"
         }
-    ],
-    "behavior": {
-        "service-mapping": {
-            "url": "",
-            "name": "kb_ReadSim",
-            "method": "run_kb_ReadSim",
-            "input_mapping": [
-                {
-                    "narrative_system_variable": "workspace",
-                    "target_property": "workspace_name"
-                },{
-                    "narrative_system_variable": "workspace_id",
-                    "target_property": "workspace_id"
-                },{
-                    "input_parameter": "parameter_1",
-                    "target_property": "parameter_1"
-                }
-            ],
-            "output_mapping": [
-                {
-                    "service_method_output_path": [0,"report_name"],
-                    "target_property": "report_name"
-                },{
-                    "service_method_output_path": [0,"report_ref"],
-                    "target_property": "report_ref"
-                }
-            ]
+      ],
+      "output_mapping" : [
+        {
+          "service_method_output_path": [0,"output_feature_set"],
+          "target_property": "output_feature_set"
+        },
+        {
+          "service_method_output_path": [0,"report_name"],
+          "target_property": "report_name"
+        },
+        {
+          "service_method_output_path": [0,"report_ref"],
+          "target_property": "report_ref"
+        },
+        {
+          "narrative_system_variable": "workspace",
+          "target_property": "wsName"
         }
-    },
-    "job_id_output_field": "docker"
+      ]
+    }
+  },
+  "job_id_output_field": "docker"
 }
