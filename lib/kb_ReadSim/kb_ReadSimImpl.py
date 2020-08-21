@@ -3,8 +3,11 @@
 import logging
 import os
 from kb_ReadSim.Utils.DownloadUtils import DownloadUtils
-
+from kb_ReadSim.Utils.SimUtils import SimUtils
+from installed_clients.readsUtilsClient import ReadsUtils
+from installed_clients.VariationUtilClient import VariationUtil
 from installed_clients.KBaseReportClient import KBaseReport
+
 #END_HEADER
 
 
@@ -37,6 +40,9 @@ class kb_ReadSim:
         self.callback_url = os.environ['SDK_CALLBACK_URL']
         self.shared_folder = config['scratch']
         self.du = DownloadUtils(self.callback_url)
+        self.su = SimUtils(self.callback_url)
+        self.ru = ReadsUtils(self.callback_url)
+        self.vu = VariationUtil(self.callback_url)
         logging.basicConfig(format='%(created)s %(levelname)s: %(message)s',
                             level=logging.INFO)
         #END_CONSTRUCTOR
@@ -57,6 +63,32 @@ class kb_ReadSim:
         print(params)
         genomeref = params['assembly_or_genome_ref']
         self.du.download_genome(genomeref, output_dir)
+        ref_genome = "/kb/module/work/tmp/ref_genome.fa"
+        output_fwd_paired_file_path  = "/kb/module/work/tmp/raed1.fq"
+        output_rev_paired_file_path = "/kb/module/work/tmp/raed2.fq"
+        self.su.simreads(ref_genome, output_fwd_paired_file_path, output_rev_paired_file_path, params)
+
+
+        retVal = self.ru.upload_reads ({ 'wsname': params['workspace_name'],
+                                       'name': params['output_read_object'],
+                                       'sequencing_tech': 'illumina',
+                                       'fwd_file': output_fwd_paired_file_path,
+                                       'rev_file': output_rev_paired_file_path
+                                  })
+
+
+        '''
+        vcf_file = self.su.format_vcf(logfile)
+        save_variation_params = {'workspace_name': params['workspace_name'],
+            'genome_or_assembly_ref': params['assembly_or_genome_ref'],      
+            'sample_set_ref':params['input_sample_set'],
+            'sample_attribute_name':'sample_attr',
+            'vcf_staging_file_path': vcf_file,
+            'variation_object_name': params['variation_object_name']
+            } 
+      
+        self.vu.save_variation_from_vcf(save_variation_params)
+        '''
         report = KBaseReport(self.callback_url)
         report_info = report.create({'report': {'objects_created':[],
                                                 'text_message': params['parameter_1']},

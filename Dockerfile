@@ -9,11 +9,19 @@ MAINTAINER KBase Developer
 # RUN apt-get update
 RUN apt-get -y update && apt-get -y install gcc \
 	 g++ \
-         git
-RUN git clone https://github.com/lh3/wgsim.git
-# -----------------------------------------
+     git \
+     zlib1g-dev
 
 COPY ./ /kb/module
+RUN mkdir -p /kb/module/deps
+
+WORKDIR /kb/module/deps
+RUN git clone https://github.com/lh3/wgsim.git
+WORKDIR /kb/module/deps/wgsim
+RUN gcc -g -O2 -Wall -o wgsim wgsim.c -lz -lm
+
+# -----------------------------------------
+
 RUN mkdir -p /kb/module/work
 RUN chmod -R a+rw /kb/module
 

@@ -116,18 +116,6 @@
             }
   },
   {
-            "id": "haplotype_mode",
-            "optional": false,
-            "advanced": true,
-            "allow_multiple": false,
-            "default_values": [ "0" ],
-            "field_type": "text",
-            "text_options": {
-                "validate_as": "int",
-                "min_integer" : 0
-            }
-  },
-  {
     "id" : "input_sample_set",
     "optional" : false,
     "advanced" : false,
@@ -230,11 +218,6 @@
          {
            "input_parameter": "frac_indels",
            "target_property": "frac_indels"
-
-        },
-        {
-            "input_parameter": "haplotype_mode",
-            "target_property": "haplotype_mode"
 
         },
         {

@@ -64,8 +64,17 @@ class kb_ReadSimTest(unittest.TestCase):
         # Check returned data with
         # self.assertEqual(ret[...], ...) or other unittest methods
         ret = self.serviceImpl.run_kb_ReadSim(self.ctx, {'workspace_name': 'pranjan77:narrative_1596711680507',
-                                                         'assembly_or_genome_ref':'52890/2/1',
+                                                         'assembly_or_genome_ref':'52890/66/1',
+                                                         'base_error_rate':'0.02',
+                                                         'outer_distance':'500',
+                                                         'standard_deviation':'50',
+                                                         'num_read_pairs':'1000000',
+                                                         'len_first_read':'70',
+                                                         'len_second_read':'70',
+                                                         'mutation_rate':'0.001',
+                                                         'frac_indels':'0.15',
                                                          'variation_object_name':'output_var_obj',
+                                                         'output_read_object':'output_read_object',
                                                          'input_sample_set':'52890/11/1',
                                                          'parameter_1': 'Success'
                                                         })
