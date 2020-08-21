@@ -1,13 +1,13 @@
 import os
 import logging
 import subprocess
-from installed_clients.AssemblyUtilClient import AssemblyUtil
+#'from installed_clients.AssemblyUtilClient import AssemblyUtil
 
 
 class SimUtils:
 
     def __init__(self, callback_url):
-        self.callbackURL = os.environ['SDK_CALLBACK_URL']
+        #self.callbackURL = os.environ['SDK_CALLBACK_URL']
         pass
 
     def run_cmd(self, cmd):
@@ -53,24 +53,35 @@ class SimUtils:
 
     def format_vcf(self, logfile):
         vcf_file = "/kb/module/work/tmp/log.vcf"
-        '''
-        A	Adenine
-C	Cytosine
-G	Guanine
-T (or U)	Thymine (or Uracil)
-R	A or G
-Y	C or T
-S	G or C
-W	A or T
-K	G or T
-M	A or C
-B	C or G or T
-D	A or G or T
-H	A or C or T
-V	A or C or G
-N	any base
-. or -	gap
-        '''
+        #vcf_file = "/Users/manishkumar/Desktop/apps/kb_ReadSim/test_local/workdir/tmp/log.vcf"
+        alt_map = { "A" : "A",
+          "C" : "C",
+          "G" : "G",
+          "T" : "T",
+          "R" : "A, G",
+          "Y" : "C, T",
+          "S" : "G, C",
+          "W" : "A, T",
+          "K" : "G, T",
+          "M" :	"A, C",
+          "B" :	"C, G, T",
+          "D" :	"A, G, T",
+          "H" :	"A, C, T",
+          "V" :	"A, C, G",
+          "N" :	"A, C, G, T"
+        }
 
-        #fastacmd -d sequences.fa -s Chr01 -L 2,10q
+        with open(vcf_file, "w") as vcf_out:
+             vcf_out.write("##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">\n")
+             vcf_out.write("##fileformat=VCFv4.3\n")
+             vcf_out.write("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n")
+             with open(logfile,"r") as vcf_in:
+                  for line in vcf_in:
+                      line = line.rstrip()
+                      rec  = line.strip(" ")
+                      if(rec[3] in alt_map):
+                         vcf_out.write(rec[0] + "\t" + rec[1] + "\t.\t" + rec[2] + "\t" + alt_map[rec[3]] + "\t25\tPASS\tGT\t1/1\n" )
+                      else:
+                         vcf_out.write(rec[0] + "\t" + rec[1] + "\t.\t" + rec[2] + "\t" + rec[3] + "\t25\tPASS\tGT\t1/1\n")
         return vcf_file
+

@@ -74,10 +74,9 @@ class kb_ReadSim:
                                        'sequencing_tech': 'illumina',
                                        'fwd_file': output_fwd_paired_file_path,
                                        'rev_file': output_rev_paired_file_path
-                                  })
+                                      })
 
-
-        '''
+        logfile = "/kb/module/work/tmp/variant.txt"
         vcf_file = self.su.format_vcf(logfile)
         save_variation_params = {'workspace_name': params['workspace_name'],
             'genome_or_assembly_ref': params['assembly_or_genome_ref'],      
@@ -86,9 +85,8 @@ class kb_ReadSim:
             'vcf_staging_file_path': vcf_file,
             'variation_object_name': params['variation_object_name']
             } 
-      
         self.vu.save_variation_from_vcf(save_variation_params)
-        '''
+
         report = KBaseReport(self.callback_url)
         report_info = report.create({'report': {'objects_created':[],
                                                 'text_message': params['parameter_1']},
