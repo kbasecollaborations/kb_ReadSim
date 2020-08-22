@@ -1,0 +1,87 @@
+{
+  "ver": "0.0.1",
+  "authors" : [ "man4ish" ],
+  "contact" : "help@kbase.us",
+  "visble" : true,
+  "categories" : ["active", "comparative_genomics", "util"],
+  "widgets" : {
+    "input" : null,
+    "output" : "no-display"
+  },
+  "parameters" : [ {
+    "id" : "sim_varobject_ref",
+    "optional" : true,
+    "advanced" : false,
+    "allow_multiple" : false,
+    "default_values" : [ "" ],
+    "field_type" : "text",
+    "text_options" : {
+      "valid_ws_types" : [ "KBaseGwasData.Variations" ]
+    }
+  },
+  {
+    "id" : "calling_varobject_ref",
+    "optional" : true,
+    "advanced" : false,
+    "allow_multiple" : false,
+    "default_values" : [ "" ],
+    "field_type" : "text",
+    "text_options" : {
+      "valid_ws_types" : [ "KBaseGwasData.Variations" ]
+    }
+  },
+  {
+    "id" : "output_variant_object",
+    "optional" : false,
+    "advanced" : false,
+    "allow_multiple" : false,
+    "default_values" : [ "" ],
+    "field_type" : "text",
+    "text_options" : {
+      "valid_ws_types" : [ "KBaseGwasData.Variations" ],
+      "is_output_name":true
+    }
+  } ],
+  "behavior" : {
+    "service-mapping" : {
+      "url" : "",
+      "name" : "FeatureSetUtils",
+      "method" : "build_feature_set",
+      "input_mapping" : [
+        {
+          "input_parameter": "sim_varobject_ref",
+          "target_property": "sim_varobject_ref",
+          "target_type_transform": "resolved-ref"
+        },
+        {
+          "input_parameter": "calling_varobject_ref",
+          "target_property": "calling_varobject_ref",
+          "target_type_transform": "resolved-ref"
+        },
+        {
+          "input_parameter": "output_variant_object",
+          "target_property": "output_variant_object"
+        }
+      ],
+      "output_mapping" : [
+        {
+          "service_method_output_path": [0,"output_feature_set"],
+          "target_property": "output_feature_set"
+        },
+        {
+          "service_method_output_path": [0,"report_name"],
+          "target_property": "report_name"
+        },
+        {
+          "service_method_output_path": [0,"report_ref"],
+          "target_property": "report_ref"
+        },
+        {
+          "narrative_system_variable": "workspace",
+          "target_property": "wsName"
+        }
+      ]
+    }
+  },
+  "job_id_output_field": "docker"
+}

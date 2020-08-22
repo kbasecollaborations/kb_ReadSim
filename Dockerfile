@@ -10,8 +10,12 @@ MAINTAINER KBase Developer
 RUN apt-get -y update && apt-get -y install gcc \
 	 g++ \
      git \
-     zlib1g-dev
+     zlib1g-dev \
+     tabix \
+     bcftools
 
+RUN pip install matplotlib
+RUN pip install matplotlib_venn
 COPY ./ /kb/module
 RUN mkdir -p /kb/module/deps
 

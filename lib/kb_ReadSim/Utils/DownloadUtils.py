@@ -15,3 +15,4 @@ class DownloadUtils:
           'filename': os.path.join(output_dir, "ref_genome.fa")
         })
         return file
+

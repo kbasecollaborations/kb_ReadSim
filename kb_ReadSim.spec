@@ -29,4 +29,14 @@ module kb_ReadSim {
     */
     funcdef run_kb_ReadSim(Inparams params) returns (ReportResults output) authentication required;
 
+   typedef structure {
+        string workspace_name;
+        string sim_varobject_name;
+        string calling_varobject_name;
+        string output_var_object;
+    } Evalparams;
+    /*
+        This example function accepts any number of parameters and returns results in a KBaseReport
+    */
+    funcdef run_eval_variantcalling(Evalparams params) returns (ReportResults output) authentication required;
 };

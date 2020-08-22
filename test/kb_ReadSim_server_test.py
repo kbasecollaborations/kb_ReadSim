@@ -53,7 +53,7 @@ class kb_ReadSimTest(unittest.TestCase):
             print('Test workspace was deleted')
 
     # NOTE: According to Python unittest naming rules test method names should start from 'test'. # noqa
-    def test_your_method(self):
+    '''def test_your_method(self):
         # Prepare test objects in workspace if needed using
         # self.getWsClient().save_objects({'workspace': self.getWsName(),
         #                                  'objects': []})
@@ -77,4 +77,11 @@ class kb_ReadSimTest(unittest.TestCase):
                                                          'output_read_object':'output_read_object',
                                                          'input_sample_set':'52890/11/1',
                                                          'parameter_1': 'Success'
+                                                        })'''
+
+    def test_run_eval_variantcalling(self):
+        ret = self.serviceImpl.run_eval_variantcalling(self.ctx, {'workspace_name': 'pranjan77:narrative_1596711680507',
+                                                         'sim_varobject_ref': '52890/45/1',
+                                                         'calling_varobject_ref': '52890/42/1',
+                                                         'output_variant_object':'output_variant_object'
                                                         })

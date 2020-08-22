@@ -2,11 +2,8 @@
 #BEGIN_HEADER
 import logging
 import os
-import uuid
 from kb_ReadSim.Utils.DownloadUtils import DownloadUtils
 from kb_ReadSim.Utils.SimUtils import SimUtils
-from kb_ReadSim.Utils.VcfEvalUtils import VcfEvalUtils
-from kb_ReadSim.Utils.htmlreportutils import htmlreportutils
 from installed_clients.readsUtilsClient import ReadsUtils
 from installed_clients.VariationUtilClient import VariationUtil
 from installed_clients.KBaseReportClient import KBaseReport
@@ -30,8 +27,8 @@ class kb_ReadSim:
     # the latter method is running.
     ######################################### noqa
     VERSION = "0.0.1"
-    GIT_URL = "https://github.com/kbasecollaborations/kb_ReadSim.git"
-    GIT_COMMIT_HASH = "c9c0185e34d25be57cc6e1c901d8801fbc0f4784"
+    GIT_URL = ""
+    GIT_COMMIT_HASH = ""
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -46,8 +43,6 @@ class kb_ReadSim:
         self.su = SimUtils(self.callback_url)
         self.ru = ReadsUtils(self.callback_url)
         self.vu = VariationUtil(self.callback_url)
-        self.eu = VcfEvalUtils()
-        self.hu = htmlreportutils()
         logging.basicConfig(format='%(created)s %(levelname)s: %(message)s',
                             level=logging.INFO)
         #END_CONSTRUCTOR
@@ -57,17 +52,7 @@ class kb_ReadSim:
     def run_kb_ReadSim(self, ctx, params):
         """
         This example function accepts any number of parameters and returns results in a KBaseReport
-        :param params: instance of type "Inparams" -> structure: parameter
-           "workspace_name" of String, parameter "input_sample_set" of
-           String, parameter "strain_info" of String, parameter
-           "assembly_or_genome_ref" of String, parameter "base_error_rate" of
-           String, parameter "outer_distance" of String, parameter
-           "standard_deviation" of String, parameter "num_read_pairs" of
-           String, parameter "len_first_read" of String, parameter
-           "len_second_read" of String, parameter "mutation_rate" of String,
-           parameter "frac_indels" of String, parameter
-           "variation_object_name" of String, parameter "output_read_object"
-           of String
+        :param params: instance of mapping from String to unspecified object
         :returns: instance of type "ReportResults" -> structure: parameter
            "report_name" of String, parameter "report_ref" of String
         """
@@ -115,64 +100,6 @@ class kb_ReadSim:
         # At some point might do deeper type checking...
         if not isinstance(output, dict):
             raise ValueError('Method run_kb_ReadSim return value ' +
-                             'output is not type dict as required.')
-        # return the results
-        return [output]
-
-    def run_eval_variantcalling(self, ctx, params):
-        """
-        This example function accepts any number of parameters and returns results in a KBaseReport
-        :param params: instance of type "Evalparams" -> structure: parameter
-           "workspace_name" of String, parameter "sim_varobject_name" of
-           String, parameter "calling_varobject_name" of String, parameter
-           "output_var_object" of String
-        :returns: instance of type "ReportResults" -> structure: parameter
-           "report_name" of String, parameter "report_ref" of String
-        """
-        # ctx is the context object
-        # return variables are: output
-        #BEGIN run_eval_variantcalling
-
-        #output_dir = os.path.join(self.shared_folder, str(uuid.uuid4()))
-        report_dir = os.path.join(self.shared_folder, str(uuid.uuid4()))
-        os.mkdir(report_dir)
-
-        output_dir = self.shared_folder
-
-        simvarfile = os.path.join(output_dir, "simvarinat.vcf.gz")
-
-        simvarpath = self.vu.get_variation_as_vcf({
-                'variation_ref': params['sim_varobject_ref'],
-                'filename': simvarfile
-            })['path']
-
-        os.rename(simvarpath, simvarfile)
-        self.eu.index_vcf(simvarfile)
-
-        callingvarfile = os.path.join(output_dir, "callingvarinat.vcf.gz")
-        callingvarpath = self.vu.get_variation_as_vcf({
-                'variation_ref': params['calling_varobject_ref'],
-                'filename': callingvarfile
-            })['path']
-
-        os.rename(callingvarpath, callingvarfile)
-        self.eu.index_vcf(callingvarfile)
-
-        self.eu.variant_evalation(simvarfile, callingvarfile, output_dir)
-
-        self.eu.plot_venn_diagram(report_dir)
-
-        report = KBaseReport(self.callback_url)
-        report_info = report.create({'report': {'objects_created': [],
-                                                'text_message': 'Success'},
-                                     'workspace_name': params['workspace_name']})
-        workspace = params['workspace_name']
-        output = self.hu.create_html_report(self.callback_url, report_dir, workspace)
-        #END run_eval_variantcalling
-
-        # At some point might do deeper type checking...
-        if not isinstance(output, dict):
-            raise ValueError('Method run_eval_variantcalling return value ' +
                              'output is not type dict as required.')
         # return the results
         return [output]

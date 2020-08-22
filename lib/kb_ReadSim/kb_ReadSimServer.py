@@ -342,6 +342,10 @@ class Application(object):
                              name='kb_ReadSim.run_kb_ReadSim',
                              types=[dict])
         self.method_authentication['kb_ReadSim.run_kb_ReadSim'] = 'required'  # noqa
+        self.rpc_service.add(impl_kb_ReadSim.run_eval_variantcalling,
+                             name='kb_ReadSim.run_eval_variantcalling',
+                             types=[dict])
+        self.method_authentication['kb_ReadSim.run_eval_variantcalling'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_ReadSim.status,
                              name='kb_ReadSim.status',
                              types=[dict])
