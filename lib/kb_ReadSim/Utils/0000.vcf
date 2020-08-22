@@ -24,7 +24,7 @@
 ##FORMAT=<ID=DP,Number=1,Type=Integer,Description=''>
 ##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=''>
 ##bcftools_isecVersion=1.10.2+htslib-1.10.2
-##bcftools_isecCommand=isec -p /Users/manishkumar/Desktop/apps/kb_ReadSim/lib/kb_ReadSim/Utils gatk_variation.fixedheader.vcf.gz jmc2_test.vcf.gz; Date=Fri Aug 21 21:22:16 2020
+##bcftools_isecCommand=isec -p /Users/manishkumar/Desktop/apps/kb_ReadSim/lib/kb_ReadSim/Utils gatk_variation.fixedheader.vcf.gz jmc2_test.vcf.gz; Date=Sat Aug 22 14:18:26 2020
 #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	sample_1
 KBase_derived_FW602_bin_15	22791	.	G	C	78.28	FS_filter;SOR_filter	AC=2;AF=1;AN=2;DP=2;ExcessHet=3;FS=0;MLEAC=1;MLEAF=0;MQ=60;QD=28;SOR=2	GT:AD:DP:GQ:PL	1/1:0,2:2:6:90,6,0
 KBase_derived_FW602_bin_15	22792	.	G	C	78.27	FS_filter;SOR_filter	AC=2;AF=1;AN=2;DP=2;ExcessHet=3;FS=0;MLEAC=1;MLEAF=0;MQ=60;QD=30;SOR=2	GT:AD:DP:GQ:PL	1/1:0,2:2:6:90,6,0

@@ -21,7 +21,7 @@ module kb_ReadSim {
         string len_second_read;
         string mutation_rate;
         string frac_indels;
-        string variation_object_name;
+        string output_variant_object;
         string output_read_object;
     } Inparams;
     /*
@@ -31,9 +31,9 @@ module kb_ReadSim {
 
    typedef structure {
         string workspace_name;
-        string sim_varobject_name;
-        string calling_varobject_name;
-        string output_var_object;
+        string varobject1_ref;
+        string varobject2_ref;
+        string output_variant_object;
     } Evalparams;
     /*
         This example function accepts any number of parameters and returns results in a KBaseReport

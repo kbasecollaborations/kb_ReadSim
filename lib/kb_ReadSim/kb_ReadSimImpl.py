@@ -3,6 +3,7 @@
 import logging
 import os
 import uuid
+import shutil
 from kb_ReadSim.Utils.DownloadUtils import DownloadUtils
 from kb_ReadSim.Utils.SimUtils import SimUtils
 from kb_ReadSim.Utils.VcfEvalUtils import VcfEvalUtils
@@ -96,6 +97,7 @@ class kb_ReadSim:
         save_variation_params = {'workspace_name': params['workspace_name'],
             'genome_or_assembly_ref': params['assembly_or_genome_ref'],      
             'sample_set_ref':params['input_sample_set'],
+            'strain_info':'SAMPLE',
             'sample_attribute_name':'sample_attr',
             'vcf_staging_file_path': vcf_file,
             'variation_object_name': params['variation_object_name']
@@ -137,28 +139,29 @@ class kb_ReadSim:
         report_dir = os.path.join(self.shared_folder, str(uuid.uuid4()))
         os.mkdir(report_dir)
 
-        output_dir = self.shared_folder
+        #output_dir = self.shared_folder
 
-        simvarfile = os.path.join(output_dir, "simvarinat.vcf.gz")
+        simvarfile = os.path.join(report_dir, "simvarinat.vcf.gz")
 
         simvarpath = self.vu.get_variation_as_vcf({
-                'variation_ref': params['sim_varobject_ref'],
+                'variation_ref': params['varobject1_ref'],
                 'filename': simvarfile
             })['path']
-
-        os.rename(simvarpath, simvarfile)
+        os.rename(simvarpath, simvarfile)  # for debugging
+        #shutil.copyfile(simvarpath, simvarfile)
         self.eu.index_vcf(simvarfile)
 
-        callingvarfile = os.path.join(output_dir, "callingvarinat.vcf.gz")
+        callingvarfile = os.path.join(report_dir, "callingvarinat.vcf.gz")
         callingvarpath = self.vu.get_variation_as_vcf({
-                'variation_ref': params['calling_varobject_ref'],
+                'variation_ref': params['varobject2_ref'],
                 'filename': callingvarfile
             })['path']
 
-        os.rename(callingvarpath, callingvarfile)
+        #shutil.copyfile(callingvarpath, callingvarfile)
+        os.rename(callingvarpath, callingvarfile)  #for deubugging
         self.eu.index_vcf(callingvarfile)
 
-        self.eu.variant_evalation(simvarfile, callingvarfile, output_dir)
+        self.eu.variant_evalation(simvarfile, callingvarfile, report_dir)
 
         self.eu.plot_venn_diagram(report_dir)
 

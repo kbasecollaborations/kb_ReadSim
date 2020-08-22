@@ -27,7 +27,7 @@
 ##bcftools_callVersion=1.9+htslib-1.9
 ##bcftools_callCommand=call -mv; Date=Thu Feb 13 00:41:25 2020
 ##bcftools_isecVersion=1.10.2+htslib-1.10.2
-##bcftools_isecCommand=isec -p /Users/manishkumar/Desktop/apps/kb_ReadSim/lib/kb_ReadSim/Utils gatk_variation.fixedheader.vcf.gz jmc2_test.vcf.gz; Date=Fri Aug 21 21:22:16 2020
+##bcftools_isecCommand=isec -p /Users/manishkumar/Desktop/apps/kb_ReadSim/lib/kb_ReadSim/Utils gatk_variation.fixedheader.vcf.gz jmc2_test.vcf.gz; Date=Sat Aug 22 14:18:26 2020
 #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	sorted_bam_file_3105cd64-9289-485d-ac27-abc2b54d65a9.bam
 KBase_derived_FW602_bin_15	23007	.	A	G	54	.	DP=8;VDB=0.0481132;SGB=-0.511536;RPB=0.861511;MQB=0.28717;MQSB=0.574341;BQB=0.861511;MQ0F=0;ICB=1;HOB=0.5;AC=1;AN=2;DP4=1,2,2,1;MQ=47	GT:PL	0/1:87,0,87
 KBase_derived_FW602_bin_15	23025	.	C	T	42.3338	.	DP=7;VDB=0.0330887;SGB=-0.511536;RPB=0.607698;MQB=0.607698;MQSB=0.810265;BQB=0.810265;MQ0F=0;ICB=1;HOB=0.5;AC=1;AN=2;DP4=3,1,0,3;MQ=51	GT:PL	0/1:75,0,107

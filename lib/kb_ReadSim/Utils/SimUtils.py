@@ -74,11 +74,11 @@ class SimUtils:
         with open(vcf_file, "w") as vcf_out:
              vcf_out.write("##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">\n")
              vcf_out.write("##fileformat=VCFv4.3\n")
-             vcf_out.write("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n")
+             vcf_out.write("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\SAMPLE\n")
              with open(logfile,"r") as vcf_in:
                   for line in vcf_in:
                       line = line.rstrip()
-                      rec  = line.strip(" ")
+                      rec  = line.split("\t")
                       if(rec[3] in alt_map):
                          vcf_out.write(rec[0] + "\t" + rec[1] + "\t.\t" + rec[2] + "\t" + alt_map[rec[3]] + "\t25\tPASS\tGT\t1/1\n" )
                       else:

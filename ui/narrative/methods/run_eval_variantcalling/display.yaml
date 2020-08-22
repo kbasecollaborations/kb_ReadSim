@@ -21,16 +21,16 @@ suggestions :
             []
 
 parameters :
-    sim_varobject_ref:
+    varobject1_ref:
         ui-name : |
-            Simulated Variant Object
+            Variation 1 Object
         short-hint : |
-            The Assembly or Genome for generating sim reads.
-    calling_varobject_ref :
+            Variation 1 Object
+    varobject2_ref :
         ui-name : |
-            Calling Variant Object
+            Variation 2 Object
         short-hint : |
-            calling Variant Object
+            Variation 2 Object
     output_variant_object :
         ui-name : |
             Output Variant Object

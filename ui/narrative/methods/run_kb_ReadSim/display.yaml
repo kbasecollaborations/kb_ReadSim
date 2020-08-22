@@ -21,7 +21,7 @@ suggestions :
             []
 
 parameters :
-    assembly_or_genome:
+    assembly_or_genome_ref:
         ui-name : |
             Assembly or Genome
         short-hint : |

@@ -9,7 +9,7 @@
     "output" : "no-display"
   },
   "parameters" : [ {
-    "id" : "sim_varobject_ref",
+    "id" : "varobject1_ref",
     "optional" : true,
     "advanced" : false,
     "allow_multiple" : false,
@@ -20,7 +20,7 @@
     }
   },
   {
-    "id" : "calling_varobject_ref",
+    "id" : "varobject2_ref",
     "optional" : true,
     "advanced" : false,
     "allow_multiple" : false,
@@ -45,17 +45,17 @@
   "behavior" : {
     "service-mapping" : {
       "url" : "",
-      "name" : "FeatureSetUtils",
-      "method" : "build_feature_set",
+      "name" : "kb_ReadSim",
+      "method" : "run_eval_variantcalling",
       "input_mapping" : [
         {
-          "input_parameter": "sim_varobject_ref",
-          "target_property": "sim_varobject_ref",
+          "input_parameter": "varobject1_ref",
+          "target_property": "varobject1_ref",
           "target_type_transform": "resolved-ref"
         },
         {
-          "input_parameter": "calling_varobject_ref",
-          "target_property": "calling_varobject_ref",
+          "input_parameter": "varobject2_ref",
+          "target_property": "varobject2_ref",
           "target_type_transform": "resolved-ref"
         },
         {

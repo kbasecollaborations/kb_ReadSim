@@ -57,17 +57,24 @@ class VcfEvalUtils:
         self.run_cmd(cmd)
 
     def plot_venn_diagram(self, output_dir):
+
         unique1 = subprocess.check_output("cat " + os.path.join(output_dir, '0000.vcf') + " | grep -v -c '#' | awk '{print $1}'", shell=True)
         unique2 = subprocess.check_output("cat " + os.path.join(output_dir, '0001.vcf') + " | grep -v -c '#' | awk '{print $1}'", shell=True)
         common = subprocess.check_output("cat " + os.path.join(output_dir, '0002.vcf') + " | grep -v -c '#' | awk '{print $1}'", shell=True)
+
         A = int(unique1.rstrip())
-        B =int(unique2.rstrip())
+        B = int(unique2.rstrip())
         AB = int(common.rstrip())
 
-        venn2(subsets=(AB, A, B), set_labels=('Simulated Variants', 'Calling Variants'))
-        plt.savefig(os.path.join(output_dir, 'venn_diagram.png'))
+        print("***" +str(A) + "***")
+        print("***" + str(B) + "***")
+        print("***" + str(AB) + "****")
 
-#ve = VcfEvalUtils()
-#ve.varian_evalation("gatk_variation.fixedheader.vcf.gz", "jmc2_test.vcf.gz", "/Users/manishkumar/Desktop/apps/kb_ReadSim/lib/kb_ReadSim/Utils")
-#ve.plot_venn_diagram("/Users/manishkumar/Desktop/apps/kb_ReadSim/lib/kb_ReadSim/Utils")
+        venn2(subsets=(AB, A, B), set_labels=('Variation 1', 'Variation 2'))
+        plt.savefig(os.path.join(output_dir, 'venn_diagram.png'))
+'''
+ve = VcfEvalUtils()
+ve.variant_evalation("gatk_variation.fixedheader.vcf.gz", "jmc2_test.vcf.gz", "/Users/manishkumar/Desktop/apps/kb_ReadSim/lib/kb_ReadSim/Utils")
+ve.plot_venn_diagram("/Users/manishkumar/Desktop/apps/kb_ReadSim/lib/kb_ReadSim/Utils")
+'''
 
