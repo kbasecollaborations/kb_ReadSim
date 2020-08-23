@@ -16,7 +16,7 @@
     "default_values" : [ "" ],
     "field_type" : "text",
     "text_options" : {
-      "valid_ws_types" : [ "KBaseMatrices.Genomes" ]
+      "valid_ws_types" : ["KBaseGenomeAnnotations.Assembly", "KBaseGenomes.Genome" ]
     }
   },
   {
