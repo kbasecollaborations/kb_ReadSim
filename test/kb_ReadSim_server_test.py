@@ -75,7 +75,7 @@ class kb_ReadSimTest(unittest.TestCase):
                                                          'frac_indels':'0.15',
                                                          'variation_object_name':'output_var_obj',
                                                          'output_read_object':'output_read_object',
-                                                         'input_sample_set':'52890/11/1',
+                                                         'input_sample_set':'52890/10/1',
                                                          'parameter_1': 'Success'
                                                         })
     '''

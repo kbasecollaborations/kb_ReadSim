@@ -11,6 +11,7 @@ from kb_ReadSim.Utils.htmlreportutils import htmlreportutils
 from installed_clients.readsUtilsClient import ReadsUtils
 from installed_clients.VariationUtilClient import VariationUtil
 from installed_clients.KBaseReportClient import KBaseReport
+from installed_clients.WorkspaceClient import Workspace
 
 #END_HEADER
 
@@ -49,6 +50,8 @@ class kb_ReadSim:
         self.vu = VariationUtil(self.callback_url)
         self.eu = VcfEvalUtils()
         self.hu = htmlreportutils()
+        self.ws_url = config['workspace-url']
+        self.wsc = Workspace(self.ws_url)
         logging.basicConfig(format='%(created)s %(levelname)s: %(message)s',
                             level=logging.INFO)
         #END_CONSTRUCTOR
@@ -78,7 +81,28 @@ class kb_ReadSim:
         output_dir = self.shared_folder
         print(params)
         genomeref = params['assembly_or_genome_ref']
-        self.du.download_genome(genomeref, output_dir)
+
+        genome_or_assembly_ref = params['assembly_or_genome_ref']
+        obj_type = self.wsc.get_object_info3({
+            'objects':[{
+                'ref': genome_or_assembly_ref
+                      }]})['infos'][0][2]
+        if ('KBaseGenomes.Genome' in obj_type):
+            genome_ref = genome_or_assembly_ref
+            subset = self.wsc.get_object_subset([{
+                    'included': ['/assembly_ref'],
+                    'ref': genome_ref
+                }])
+            assembly_ref = subset[0]['data']['assembly_ref']
+        elif ('KBaseGenomeAnnotations.Assembly' in obj_type):
+            assembly_ref = genome_or_assembly_ref
+        else:
+            raise ValueError(obj_type + ' is not the right input for this method. '
+                                      + 'Valid input include KBaseGenomes.Genome or '
+                                      + 'KBaseGenomeAnnotations.Assembly ')
+
+        self.du.download_genome(assembly_ref, output_dir)
+
         ref_genome = "/kb/module/work/tmp/ref_genome.fa"
         output_fwd_paired_file_path  = "/kb/module/work/tmp/raed1.fq"
         output_rev_paired_file_path = "/kb/module/work/tmp/raed2.fq"
@@ -97,7 +121,6 @@ class kb_ReadSim:
         save_variation_params = {'workspace_name': params['workspace_name'],
             'genome_or_assembly_ref': params['assembly_or_genome_ref'],      
             'sample_set_ref':params['input_sample_set'],
-            'strain_info':'SAMPLE',
             'sample_attribute_name':'sample_attr',
             'vcf_staging_file_path': vcf_file,
             'variation_object_name': params['variation_object_name']

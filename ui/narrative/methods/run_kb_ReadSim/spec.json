@@ -157,7 +157,8 @@
       "valid_ws_types" : [ "KBaseGwasData.Variations" ],
       "is_output_name":true
     }
-  }, {
+  },
+    {
     "id" : "output_read_object",
     "optional" : false,
     "advanced" : false,
@@ -165,7 +166,7 @@
     "default_values" : [ "" ],
     "field_type" : "text",
     "text_options" : {
-      "valid_ws_types" : [ "KBaseCollections.FeatureSet" ],
+      "valid_ws_types" : ["KBaseFile.PairedEndLibrary"],
       "is_output_name":true
     }
   } ],
@@ -193,9 +194,8 @@
         {
             "input_parameter": "standard_deviation",
             "target_property": "standard_deviation"
-
         },
-         {
+        {
            "input_parameter": "num_read_pairs",
            "target_property": "num_read_pairs"
 
@@ -213,9 +213,8 @@
         {
             "input_parameter": "mutation_rate",
             "target_property": "mutation_rate"
-
         },
-         {
+        {
            "input_parameter": "frac_indels",
            "target_property": "frac_indels"
 
