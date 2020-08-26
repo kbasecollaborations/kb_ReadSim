@@ -177,6 +177,9 @@
 			"name": "kb_ReadSim",
 			"method": "run_kb_ReadSim",
 			"input_mapping": [{
+                    "narrative_system_variable": "workspace",
+                    "target_property": "workspace_name"
+                },{
 					"input_parameter": "assembly_or_genome_ref",
 					"target_property": "assembly_or_genome_ref",
 					"target_type_transform": "resolved-ref"

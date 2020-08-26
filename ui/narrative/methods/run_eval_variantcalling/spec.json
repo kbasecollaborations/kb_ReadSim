@@ -48,7 +48,10 @@
 			"url": "",
 			"name": "kb_ReadSim",
 			"method": "run_eval_variantcalling",
-			"input_mapping": [{
+			"input_mapping": [ {
+                    "narrative_system_variable": "workspace",
+                    "target_property": "workspace_name"
+                },{
 					"input_parameter": "varobject1_ref",
 					"target_property": "varobject1_ref",
 					"target_type_transform": "resolved-ref"
