@@ -1,4 +1,4 @@
-name     : kb_ReadSim
+name     : Compare Variations
 tooltip  : |
     Comparing Variant objects
 screenshots :
@@ -21,18 +21,18 @@ suggestions :
 parameters :
     varobject1_ref:
         ui-name : |
-            Variation 1 Object
+            Variation Object 1
         short-hint : |
-            Variation 1 Object
+            First Variation Object
     varobject2_ref :
         ui-name : |
-            Variation 2 Object
+            Variation Object 2
         short-hint : |
-            Variation 2 Object
+            Second Variation Object
     output_variant_object :
         ui-name : |
-            Prefix Output Variant Object
+            Prefix Output Variation Object
         short-hint : |
-            Prefix to the Output Variant Objects
+            Prefix to the Output Variant Object
 description : |
     <p>http://samtools.github.io/bcftools/bcftools.html</p>

@@ -1,4 +1,4 @@
-name     : kb_ReadSim
+name     : Raed Simulator For Variation Analysis
 tooltip  : |
     Simulate Sequencing Reads
 screenshots :
@@ -31,38 +31,39 @@ parameters :
             Base error rate   
     outer_distance :        
         ui-name : |
-            outer_distance
+            Outer Distance
         short-hint : |
-            outer_distance    
+            Outer Distance
     standard_deviation :        
         ui-name : |
-            standard_deviation
+            Standard Deviation
         short-hint : |
-            standard_deviation      
+            Standard Deviation
     num_read_pairs :       
         ui-name : |
-            num_read_pairs
+            Number of paired reads
         short-hint : |
-            num_read_pairs         
+            Number of paired reads
     len_first_read :       
         ui-name : |
-            len_first_read
+            Lenght of first read
         short-hint : |
+            Lenght of first read
     len_second_read :       
         ui-name : |
-            len_second_read
+            Lenght of second read
         short-hint : |
-            len_second_read 
+            Lenght of second read
     mutation_rate :        
         ui-name : |
-            mutation_rate
+            Mutation Rate
         short-hint : |
-            mutation_rate 
+            Mutation Rate
     frac_indels :        
         ui-name : |
-            frac_indels
+            Fraction of indels
         short-hint : |
-            frac_indels
+            Fractionof indels
     input_sample_set:
         ui-name : |
             Sample set
@@ -77,7 +78,7 @@ parameters :
         ui-name : |
             Output Variant Object
         short-hint : |
-            utput Variant Object
+            Output Variant Object
     output_read_object :
         ui-name : |
             Output Read Object
