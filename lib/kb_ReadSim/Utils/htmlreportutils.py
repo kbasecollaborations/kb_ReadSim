@@ -9,7 +9,9 @@ class htmlreportutils:
 
     def import_image(self, output_dir):
         '''
-                function for adding venn_diagram to report
+        function for adding venn_diagram to report
+        :param output_dir:
+        :return: image path
         '''
 
         output = "<html><head></head><body>"
@@ -20,7 +22,11 @@ class htmlreportutils:
 
     def create_html_report(self, callback_url, output_dir, workspace_name):
         '''
-         function for creating html report
+        function for creating html report
+        :param callback_url:
+        :param output_dir:
+        :param workspace_name:
+        :return: report
         '''
 
         dfu = DataFileUtil(callback_url)

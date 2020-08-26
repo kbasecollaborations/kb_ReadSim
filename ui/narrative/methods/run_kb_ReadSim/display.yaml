@@ -6,8 +6,6 @@ screenshots :
 
 icon: kb-orange.png
 
-replacement-text : Query expression database with gene list.
-
 suggestions :
     apps:
         related :
@@ -86,9 +84,4 @@ parameters :
         short-hint : |
             Output Read Object         
 description : |
-    <p>FeatureSets are useful for grouping a set of proteinencoding gene features and performing some operation on that set of features. For instance, instead of specifying all the features in a list for each App, you can use this App to build a single FeatureSet and then use this as input for other Apps. There are quite a few Apps that accept a FeatureSet as input, including types of BLAST, MUSCLE, and expression analysis. FeatureSets are also shareable, so it allows you to call out or comment on specific features in your Narrative.</p>
-publications :
-    -
-        display-text: |
-            Arkin AP, Cottingham RW, Henry CS, Harris NL, Stevens RL, Maslov S, et al. KBase: The United States Department of Energy Systems Biology Knowledgebase. Nature Biotechnology. 2018;36: 566. doi: 10.1038/nbt.4163
-        link: https://www.nature.com/articles/nbt.4163
+        <p>http://samtools.github.io/bcftools/bcftools.html</p>

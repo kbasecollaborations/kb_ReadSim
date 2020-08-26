@@ -2,8 +2,8 @@
 #BEGIN_HEADER
 import logging
 import os
+import os.path
 import uuid
-import shutil
 from kb_ReadSim.Utils.DownloadUtils import DownloadUtils
 from kb_ReadSim.Utils.SimUtils import SimUtils
 from kb_ReadSim.Utils.VcfEvalUtils import VcfEvalUtils
@@ -45,7 +45,7 @@ class kb_ReadSim:
         self.callback_url = os.environ['SDK_CALLBACK_URL']
         self.shared_folder = config['scratch']
         self.du = DownloadUtils(self.callback_url)
-        self.su = SimUtils(self.callback_url)
+        self.su = SimUtils()
         self.ru = ReadsUtils(self.callback_url)
         self.vu = VariationUtil(self.callback_url)
         self.eu = VcfEvalUtils()
@@ -80,7 +80,6 @@ class kb_ReadSim:
         #BEGIN run_kb_ReadSim
         output_dir = self.shared_folder
         print(params)
-        genomeref = params['assembly_or_genome_ref']
 
         genome_or_assembly_ref = params['assembly_or_genome_ref']
         obj_type = self.wsc.get_object_info3({
@@ -103,11 +102,11 @@ class kb_ReadSim:
 
         self.du.download_genome(assembly_ref, output_dir)
 
-        ref_genome = "/kb/module/work/tmp/ref_genome.fa"
-        output_fwd_paired_file_path  = "/kb/module/work/tmp/raed1.fq"
-        output_rev_paired_file_path = "/kb/module/work/tmp/raed2.fq"
-        self.su.simreads(ref_genome, output_fwd_paired_file_path, output_rev_paired_file_path, params)
+        ref_genome = "/kb/module/work/tmp/ref_genome.fa"                #hardcoded for testing
+        output_fwd_paired_file_path  = "/kb/module/work/tmp/raed1.fq"   #hardcoded for testing
+        output_rev_paired_file_path = "/kb/module/work/tmp/raed2.fq"    #hardcoded for testing
 
+        self.su.simreads(ref_genome, output_fwd_paired_file_path, output_rev_paired_file_path, params)
 
         retVal = self.ru.upload_reads ({ 'wsname': params['workspace_name'],
                                        'name': params['output_read_object'],
@@ -116,8 +115,9 @@ class kb_ReadSim:
                                        'rev_file': output_rev_paired_file_path
                                       })
 
-        logfile = "/kb/module/work/tmp/variant.txt"
+        logfile = "/kb/module/work/tmp/variant.txt"                     #hardcoded for testing
         vcf_file = self.su.format_vcf(logfile)
+
         save_variation_params = {'workspace_name': params['workspace_name'],
             'genome_or_assembly_ref': params['assembly_or_genome_ref'],      
             'sample_set_ref':params['input_sample_set'],
@@ -158,40 +158,109 @@ class kb_ReadSim:
         # return variables are: output
         #BEGIN run_eval_variantcalling
 
-        #output_dir = os.path.join(self.shared_folder, str(uuid.uuid4()))
         report_dir = os.path.join(self.shared_folder, str(uuid.uuid4()))
         os.mkdir(report_dir)
 
-        #output_dir = self.shared_folder
+        self.ws = Workspace(url=self.ws_url, token=ctx['token'])
+
+        var_object1_ref = params['varobject1_ref']
+        sampleset_ref1 = self.ws.get_objects2({'objects': [{"ref": var_object1_ref, 'included': ['/sample_set_ref']}]})['data'][0]['data']['sample_set_ref']
+
+        var_object2_ref = params['varobject1_ref']
+        sampleset_ref2 = self.ws.get_objects2({'objects': [{"ref": var_object2_ref, 'included': ['/sample_set_ref']}]})['data'][0]['data']['sample_set_ref']
+
+        if(sampleset_ref1 != sampleset_ref2):
+            raise Exception("Variation objects are from different sample set\n")
+
+        assembly_ref_set = set()
+        genomeset_ref_set = set()
+
+        variation_obj1 = self.ws.get_objects2({'objects': [{'ref': var_object1_ref}]})['data'][0]
+
+        if 'assembly_ref' in variation_obj1['data']:
+            assembly_ref1 = variation_obj1['data']['assembly_ref']
+            assembly_ref_set.add(assembly_ref1)
+        elif 'genome_ref' in variation_obj1['data']:
+            genome_ref1 = variation_obj1['data']['genome_ref']
+            genomeset_ref_set.add(genome_ref1)
+
+        variation_obj2 = self.ws.get_objects2({'objects': [{'ref': var_object2_ref}]})['data'][0]
+        if 'assembly_ref' in variation_obj2['data']:
+            assembly_ref2 = variation_obj2['data']['assembly_ref']
+            assembly_ref_set.add(assembly_ref2)
+        elif 'genome_ref' in variation_obj2['data']:
+            genome_ref2 = variation_obj2['data']['genome_ref']
+            genomeset_ref_set.add(genome_ref2)
+
+        assembly_or_genome_ref = ''
+
+        if (len(genomeset_ref_set) == 0 and len(assembly_ref_set) != 1):
+            raise Exception("variation objects are from different assembly refs")
+        elif (len(assembly_ref_set) == 0 and len(genomeset_ref_set) != 1):
+            raise Exception("variation objects are from different genome set refs")
 
         simvarfile = os.path.join(report_dir, "simvarinat.vcf.gz")
-
-        simvarpath = self.vu.get_variation_as_vcf({
-                'variation_ref': params['varobject1_ref'],
-                'filename': simvarfile
-            })['path']
-        os.rename(simvarpath, simvarfile)  # for debugging
-        #shutil.copyfile(simvarpath, simvarfile)
+        simvarpath = self.du.download_variations(var_object1_ref, simvarfile)
+        os.rename(simvarpath, simvarfile)
         self.eu.index_vcf(simvarfile)
 
         callingvarfile = os.path.join(report_dir, "callingvarinat.vcf.gz")
-        callingvarpath = self.vu.get_variation_as_vcf({
-                'variation_ref': params['varobject2_ref'],
-                'filename': callingvarfile
-            })['path']
-
-        #shutil.copyfile(callingvarpath, callingvarfile)
-        os.rename(callingvarpath, callingvarfile)  #for deubugging
+        callingvarpath = self.du.download_variations(var_object2_ref, callingvarfile)
+        os.rename(callingvarpath, callingvarfile)
         self.eu.index_vcf(callingvarfile)
 
-        self.eu.variant_evalation(simvarfile, callingvarfile, report_dir)
+        eval_results = self.eu.variant_evalation(simvarfile, callingvarfile, report_dir)
 
-        self.eu.plot_venn_diagram(report_dir)
+        unique1_vcf = eval_results['unique1']
+        self.eu.check_path_exists(unique1_vcf)
 
-        report = KBaseReport(self.callback_url)
-        report_info = report.create({'report': {'objects_created': [],
-                                                'text_message': 'Success'},
-                                     'workspace_name': params['workspace_name']})
+        unique2_vcf = eval_results['unique2']
+        self.eu.check_path_exists(unique2_vcf)
+
+        common_vcf = eval_results['common']
+        self.eu.check_path_exists(common_vcf)
+
+        image_path = self.eu.plot_venn_diagram(report_dir, unique1_vcf, unique2_vcf, common_vcf)
+        self.eu.check_path_exists(image_path)
+
+        if(len(assembly_ref_set) != 0):
+            assembly_or_genome_ref = assembly_ref_set.pop()
+        elif(len(genomeset_ref_set) != 0):
+            assembly_or_genome_ref = genomeset_ref_set.pop()
+
+        logging.info("Saving Unique1 vcf\n")
+        save_unique_variation_params1 = {'workspace_name': params['workspace_name'],
+                                        'genome_or_assembly_ref': assembly_or_genome_ref,
+                                        'sample_set_ref': sampleset_ref1,
+                                        'sample_attribute_name': 'sample_unique_attr1',
+                                        'vcf_staging_file_path': unique1_vcf,
+                                        'variation_object_name': params['output_variant_object'] + "_sample1_unique"
+        }
+        self.vu.save_variation_from_vcf(save_unique_variation_params1)
+        logging.info("Saving done\n")
+
+        logging.info("Saving Unique2 vcf\n")
+        save_unique_variation_params2 = {'workspace_name': params['workspace_name'],
+                                        'genome_or_assembly_ref': assembly_or_genome_ref,
+                                        'sample_set_ref': sampleset_ref1,
+                                        'sample_attribute_name': 'sample_unique_attr2',
+                                        'vcf_staging_file_path': unique2_vcf,
+                                        'variation_object_name': params['output_variant_object'] + "_sample2_unique"
+        }
+        self.vu.save_variation_from_vcf(save_unique_variation_params2)
+        logging.info("Saving done\n")
+
+        logging.info("Saving Common vcf\n")
+        save_common_variation_params = {'workspace_name': params['workspace_name'],
+                                 'genome_or_assembly_ref': assembly_or_genome_ref,
+                                 'sample_set_ref': sampleset_ref1,
+                                 'sample_attribute_name': 'sample_common_attr',
+                                 'vcf_staging_file_path': common_vcf,
+                                 'variation_object_name': params['output_variant_object'] + "_sample1_sample2_common"
+        }
+        self.vu.save_variation_from_vcf(save_common_variation_params)
+        logging.info("Saving done\n")
+
         workspace = params['workspace_name']
         output = self.hu.create_html_report(self.callback_url, report_dir, workspace)
         #END run_eval_variantcalling
