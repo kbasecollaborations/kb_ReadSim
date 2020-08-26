@@ -74,7 +74,7 @@ parameters :
             Strain information
         short-hint : |
             Select sample from the corresponding sample set        
-    output_variant_object :
+    variation_object_name :
         ui-name : |
             Output Variant Object
         short-hint : |

@@ -21,7 +21,7 @@ module kb_ReadSim {
         string len_second_read;
         string mutation_rate;
         string frac_indels;
-        string output_variant_object;
+        string variation_object_name;
         string output_read_object;
     } Inparams;
     /*

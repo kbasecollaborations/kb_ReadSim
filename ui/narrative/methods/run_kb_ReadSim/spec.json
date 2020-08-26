@@ -147,7 +147,7 @@
 			}
 		},
 		{
-			"id": "output_variant_object",
+			"id": "variation_object_name",
 			"optional": false,
 			"advanced": false,
 			"allow_multiple": false,
@@ -228,8 +228,8 @@
 					"target_property": "strain_info"
 				},
 				{
-					"input_parameter": "output_variant_object",
-					"target_property": "output_variant_object"
+					"input_parameter": "variation_object_name",
+					"target_property": "variation_object_name"
 				},
 				{
 					"input_parameter": "output_read_object",
