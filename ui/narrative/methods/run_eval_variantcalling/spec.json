@@ -76,8 +76,8 @@
 					"target_property": "report_ref"
 				},
 				{
-					"narrative_system_variable": "workspace_name",
-					"target_property": "wsName"
+					"narrative_system_variable": "workspace",
+					"target_property": "workspace_name"
 				}
 			]
 		}
