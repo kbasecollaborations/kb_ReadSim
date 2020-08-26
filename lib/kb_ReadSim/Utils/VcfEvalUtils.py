@@ -11,6 +11,14 @@ class VcfEvalUtils:
         self.ru = RunUtils()
         pass
 
+    def validate_eval_params(self, params):
+        if 'varobject1_ref' not in params:
+            raise ValueError('required varobject1_ref field was not defined')
+        elif 'varobject2_ref' not in params:
+            raise ValueError('required varobject2_ref field was not defined')
+        elif 'output_variant_object' not in params:
+            raise ValueError('required output_variant_object field was not defined')
+
     def bgzip_vcf(self, vcf_file):
         '''
         This function zip (bgzip) vcf file
@@ -79,10 +87,6 @@ class VcfEvalUtils:
         A = int(unique1.rstrip())
         B = int(unique2.rstrip())
         AB = int(common.rstrip())
-
-        print("***" +str(A) + "***")
-        print("***" + str(B) + "***")
-        print("***" + str(AB) + "****")
 
         venn2(subsets=(AB, A, B), set_labels=('Variation 1', 'Variation 2'))
 

@@ -8,6 +8,32 @@ class SimUtils:
         self.ru = RunUtils()
         pass
 
+    def validate_simreads_params(self, params):
+        if 'assembly_or_genome_ref' not in params:
+            raise ValueError('required assembly_or_genome_ref field was not defined')
+        elif 'base_error_rate' not in params:
+            raise ValueError('required base_error_rate field was not defined')
+        elif 'outer_distance' not in params:
+            raise ValueError('required outer_distance field was not defined')
+        elif 'standard_deviation' not in params:
+            raise ValueError('required standard_deviation field was not defined')
+        elif 'num_read_pairs' not in params:
+            raise ValueError('required num_read_pairs field was not defined')
+        elif 'len_first_read' not in params:
+            raise ValueError('required len_first_read field was not defined')
+        elif 'len_second_read' not in params:
+            raise ValueError('required len_second_read field was not defined')
+        elif 'mutation_rate' not in params:
+            raise ValueError('required mutation_rate field was not defined')
+        elif 'frac_indels' not in params:
+            raise ValueError('required frac_indels field was not defined')
+        elif 'variation_object_name' not in params:
+            raise ValueError('required variation_object_name field was not defined')
+        elif 'output_read_object' not in params:
+            raise ValueError('required output_read_object field was not defined')
+        elif 'input_sample_set' not in params:
+            raise ValueError('required input_sample_set field was not defined')
+
     def simreads(self, ref_genome, output_fwd_paired_file_path, output_rev_paired_file_path, params):
         '''
         This funciton executes wgsim and generate simulated reads.

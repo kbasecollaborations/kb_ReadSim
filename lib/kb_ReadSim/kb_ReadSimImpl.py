@@ -80,6 +80,7 @@ class kb_ReadSim:
         #BEGIN run_kb_ReadSim
         output_dir = self.shared_folder
         print(params)
+        self.su.validate_simreads_params(params)
 
         genome_or_assembly_ref = params['assembly_or_genome_ref']
         obj_type = self.wsc.get_object_info3({
@@ -157,6 +158,9 @@ class kb_ReadSim:
         # ctx is the context object
         # return variables are: output
         #BEGIN run_eval_variantcalling
+
+        print(params)
+        self.eu.validate_eval_params(params)
 
         report_dir = os.path.join(self.shared_folder, str(uuid.uuid4()))
         os.mkdir(report_dir)
