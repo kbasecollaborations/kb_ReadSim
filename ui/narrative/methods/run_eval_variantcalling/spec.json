@@ -76,7 +76,7 @@
 					"target_property": "report_ref"
 				},
 				{
-					"narrative_system_variable": "workspace",
+					"narrative_system_variable": "workspace_name",
 					"target_property": "wsName"
 				}
 			]
