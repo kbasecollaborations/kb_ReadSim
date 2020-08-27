@@ -9,7 +9,7 @@
 		"output": "no-display"
 	},
 	"parameters": [{
-			"id": "varobject1_ref",
+			"id": "varobject_ref1",
 			"optional": true,
 			"advanced": false,
 			"allow_multiple": false,
@@ -20,7 +20,7 @@
 			}
 		},
 		{
-			"id": "varobject2_ref",
+			"id": "varobject_ref2",
 			"optional": true,
 			"advanced": false,
 			"allow_multiple": false,
@@ -52,13 +52,13 @@
                     "narrative_system_variable": "workspace",
                     "target_property": "workspace_name"
                 },{
-					"input_parameter": "varobject1_ref",
-					"target_property": "varobject1_ref",
+					"input_parameter": "varobject_ref1",
+					"target_property": "varobject_ref1",
 					"target_type_transform": "resolved-ref"
 				},
 				{
-					"input_parameter": "varobject2_ref",
-					"target_property": "varobject2_ref",
+					"input_parameter": "varobject_ref2",
+					"target_property": "varobject_ref2",
 					"target_type_transform": "resolved-ref"
 				},
 				{

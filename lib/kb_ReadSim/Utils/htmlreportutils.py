@@ -1,5 +1,4 @@
 import uuid
-import os
 from installed_clients.DataFileUtilClient import DataFileUtil
 from installed_clients.KBaseReportClient import KBaseReport
 
@@ -48,7 +47,7 @@ class htmlreportutils:
             'shock_id': report_shock_id,
             'name': 'index.html',
             'label': 'index.html',
-            'description': 'HTMLL report for GSEA'
+            'description': 'HTMLL report for Variation Comparision'
             }
         
         report_info = report.create_extended_report({

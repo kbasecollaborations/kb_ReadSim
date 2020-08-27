@@ -12,10 +12,16 @@ class VcfEvalUtils:
         pass
 
     def validate_eval_params(self, params):
-        if 'varobject1_ref' not in params:
-            raise ValueError('required varobject1_ref field was not defined')
-        elif 'varobject2_ref' not in params:
-            raise ValueError('required varobject2_ref field was not defined')
+        '''
+        Function for validating input parameters
+        :param params:
+        :return:
+        '''
+
+        if 'varobject_ref1' not in params:
+            raise ValueError('required varobject_ref1 field was not defined')
+        elif 'varobject_ref2' not in params:
+            raise ValueError('required varobject_ref2 field was not defined')
         elif 'output_variant_object' not in params:
             raise ValueError('required output_variant_object field was not defined')
 
@@ -88,9 +94,10 @@ class VcfEvalUtils:
         B = int(unique2.rstrip())
         AB = int(common.rstrip())
 
-        venn2(subsets=(AB, A, B), set_labels=('Variation 1', 'Variation 2'))
+        venn2(subsets=(A, B, AB), set_labels=('Variation 1', 'Variation 2'))
 
         image_path = os.path.join(output_dir, 'venn_diagram.png')
+
         plt.savefig(image_path)
 
         return image_path

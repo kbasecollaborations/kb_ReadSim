@@ -1,5 +1,3 @@
-import logging
-import subprocess
 from kb_ReadSim.Utils.RunUtils import RunUtils
 
 
@@ -9,6 +7,12 @@ class SimUtils:
         pass
 
     def validate_simreads_params(self, params):
+        '''
+        Function for validating input parameters
+        :param params:
+        :return:
+        '''
+
         if 'assembly_or_genome_ref' not in params:
             raise ValueError('required assembly_or_genome_ref field was not defined')
         elif 'base_error_rate' not in params:
@@ -43,6 +47,9 @@ class SimUtils:
         :param params:
         :return:
         '''
+
+        #Todo : need to add -h as parameter later.
+
         cmd = ["/kb/module/deps/wgsim/wgsim"]
         cmd.extend(["-e", str(params['base_error_rate'])])
         cmd.extend(["-d", str(params['outer_distance'])])

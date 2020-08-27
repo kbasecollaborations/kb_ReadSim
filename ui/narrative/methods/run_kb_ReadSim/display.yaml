@@ -1,4 +1,4 @@
-name     : Raed Simulator For Variation Analysis
+name     : Read Simulator For Variation Analysis
 tooltip  : |
     Simulate Sequencing Reads
 screenshots :
@@ -85,4 +85,7 @@ parameters :
         short-hint : |
             Output Read Object         
 description : |
-        <p>http://samtools.github.io/bcftools/bcftools.html</p>
+    <p>This app uses Wgsim tool for simulating sequence reads from a reference genome. It is able to simulate diploid genomes with SNPs
+    and insertion/deletion (INDEL) polymorphisms, and simulate reads with uniform substitution sequencing errors. It also generated the log file for variants introduced in reads in vcf format.
+    <b>Team members who developed & deployed App in KBase:<b> Manish Kumar. For questions, please contact us.<p>
+    <p>lnik : https://popmodels.cancercontrol.cancer.gov/gsr/packages/wgsim/ </p>

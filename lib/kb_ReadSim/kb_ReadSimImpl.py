@@ -103,11 +103,15 @@ class kb_ReadSim:
 
         self.du.download_genome(assembly_ref, output_dir)
 
-        ref_genome = "/kb/module/work/tmp/ref_genome.fa"                #hardcoded for testing
-        output_fwd_paired_file_path  = "/kb/module/work/tmp/raed1.fq"   #hardcoded for testing
-        output_rev_paired_file_path = "/kb/module/work/tmp/raed2.fq"    #hardcoded for testing
+        ref_genome = os.path.join(self.shared_folder, "ref_genome.fa")
+        output_fwd_paired_file_path  = os.path.join(self.shared_folder, "raed1.fq")
+        output_rev_paired_file_path = os.path.join(self.shared_folder, "raed2.fq")
+
+        self.eu.check_path_exists(ref_genome)
 
         self.su.simreads(ref_genome, output_fwd_paired_file_path, output_rev_paired_file_path, params)
+        self.eu.check_path_exists(output_fwd_paired_file_path)
+        self.eu.check_path_exists(output_rev_paired_file_path)
 
         retVal = self.ru.upload_reads ({ 'wsname': params['workspace_name'],
                                        'name': params['output_read_object'],
@@ -116,8 +120,11 @@ class kb_ReadSim:
                                        'rev_file': output_rev_paired_file_path
                                       })
 
-        logfile = "/kb/module/work/tmp/variant.txt"                     #hardcoded for testing
+        logfile = os.path.join(self.shared_folder, "variant.txt")
+        self.eu.check_path_exists(logfile)
+
         vcf_file = self.su.format_vcf(logfile)
+        self.eu.check_path_exists(vcf_file)
 
         save_variation_params = {'workspace_name': params['workspace_name'],
             'genome_or_assembly_ref': params['assembly_or_genome_ref'],      
@@ -167,10 +174,10 @@ class kb_ReadSim:
 
         self.ws = Workspace(url=self.ws_url, token=ctx['token'])
 
-        var_object_ref1 = params['varobject1_ref']
+        var_object_ref1 = params['varobject_ref1']
         sampleset_ref1 = self.ws.get_objects2({'objects': [{"ref": var_object_ref1, 'included': ['/sample_set_ref']}]})['data'][0]['data']['sample_set_ref']
 
-        var_object_ref2 = params['varobject1_ref']
+        var_object_ref2 = params['varobject_ref2']
         sampleset_ref2 = self.ws.get_objects2({'objects': [{"ref": var_object_ref2, 'included': ['/sample_set_ref']}]})['data'][0]['data']['sample_set_ref']
 
         if(sampleset_ref1 != sampleset_ref2):
@@ -196,20 +203,22 @@ class kb_ReadSim:
             genome_ref2 = variation_obj2['data']['genome_ref']
             genomeset_ref_set.add(genome_ref2)
 
-        assembly_or_genome_ref = ''
+        assembly_or_genome_ref = None
 
-        if (len(genomeset_ref_set) == 0 and len(assembly_ref_set) != 1):
+        if (not genomeset_ref_set and len(assembly_ref_set) != 1):
             raise Exception("variation objects are from different assembly refs")
-        elif (len(assembly_ref_set) == 0 and len(genomeset_ref_set) != 1):
-            raise Exception("variation objects are from different genome set refs")
+        elif (not assembly_ref_set and len(genomeset_ref_set) != 1):
+            raise Exception("variation objects are from different genome refs")
 
         simvarfile = os.path.join(report_dir, "simvarinat.vcf.gz")
         simvarpath = self.du.download_variations(var_object_ref1, simvarfile)
+
         os.rename(simvarpath, simvarfile)
         self.eu.index_vcf(simvarfile)
 
         callingvarfile = os.path.join(report_dir, "callingvarinat.vcf.gz")
         callingvarpath = self.du.download_variations(var_object_ref2, callingvarfile)
+
         os.rename(callingvarpath, callingvarfile)
         self.eu.index_vcf(callingvarfile)
 
@@ -225,7 +234,7 @@ class kb_ReadSim:
         self.eu.check_path_exists(common_vcf)
 
         image_path = self.eu.plot_venn_diagram(report_dir, unique_vcf1, unique_vcf2, common_vcf)
-        self.eu.check_path_exists(image_path)
+        self.check_path_exists(image_path)
 
         if(len(assembly_ref_set) != 0):
             assembly_or_genome_ref = assembly_ref_set.pop()

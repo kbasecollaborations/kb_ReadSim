@@ -19,12 +19,12 @@ suggestions :
             []
 
 parameters :
-    varobject1_ref:
+    varobject_ref1:
         ui-name : |
             Variation Object 1
         short-hint : |
             First Variation Object
-    varobject2_ref :
+    varobject_ref2 :
         ui-name : |
             Variation Object 2
         short-hint : |
@@ -35,4 +35,5 @@ parameters :
         short-hint : |
             Prefix to the Output Variant Object
 description : |
-    <p>http://samtools.github.io/bcftools/bcftools.html</p>
+    This app uses bcftools for creating intersection and complements of two Variant Objects.
+    <p>link : http://samtools.github.io/bcftools/bcftools.html</p>

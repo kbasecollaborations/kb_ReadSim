@@ -64,9 +64,9 @@ class kb_ReadSimTest(unittest.TestCase):
         #
         # Check returned data with
         # self.assertEqual(ret[...], ...) or other unittest methods
-        '''
+
         ret = self.serviceImpl.run_kb_ReadSim(self.ctx, {'workspace_name': 'pranjan77:narrative_1596711680507',
-                                                         'assembly_or_genome_ref':'52890/66/1',
+                                                         'assembly_or_genome_ref':'52890/191/1',
                                                          'base_error_rate':'0.02',
                                                          'outer_distance':'500',
                                                          'standard_deviation':'50',
@@ -77,13 +77,13 @@ class kb_ReadSimTest(unittest.TestCase):
                                                          'frac_indels':'0.15',
                                                          'variation_object_name':'output_var_obj',
                                                          'output_read_object':'output_read_object',
-                                                         'input_sample_set':'52890/10/1'
-                                                        })'''
+                                                         'input_sample_set':'52890/138/1'
+                                                        })
 
     def test_run_eval_variantcalling(self):
         ret = self.serviceImpl.run_eval_variantcalling(self.ctx, {'workspace_name': 'pranjan77:narrative_1596711680507',
-                                                         'varobject1_ref': '52890/148/1',
-                                                         'varobject2_ref': '52890/151/1',
+                                                         'varobject_ref1': '52890/148/1',
+                                                         'varobject_ref2': '52890/151/1',
                                                          'output_variant_object':'output'
                                                         })
 

@@ -31,8 +31,8 @@ module kb_ReadSim {
 
    typedef structure {
         string workspace_name;
-        string varobject1_ref;
-        string varobject2_ref;
+        string varobject_ref1;
+        string varobject_ref2;
         string output_variant_object;
     } Evalparams;
     /*
