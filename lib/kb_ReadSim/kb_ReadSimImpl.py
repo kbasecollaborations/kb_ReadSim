@@ -167,11 +167,11 @@ class kb_ReadSim:
 
         self.ws = Workspace(url=self.ws_url, token=ctx['token'])
 
-        var_object1_ref = params['varobject1_ref']
-        sampleset_ref1 = self.ws.get_objects2({'objects': [{"ref": var_object1_ref, 'included': ['/sample_set_ref']}]})['data'][0]['data']['sample_set_ref']
+        var_object_ref1 = params['varobject1_ref']
+        sampleset_ref1 = self.ws.get_objects2({'objects': [{"ref": var_object_ref1, 'included': ['/sample_set_ref']}]})['data'][0]['data']['sample_set_ref']
 
-        var_object2_ref = params['varobject1_ref']
-        sampleset_ref2 = self.ws.get_objects2({'objects': [{"ref": var_object2_ref, 'included': ['/sample_set_ref']}]})['data'][0]['data']['sample_set_ref']
+        var_object_ref2 = params['varobject1_ref']
+        sampleset_ref2 = self.ws.get_objects2({'objects': [{"ref": var_object_ref2, 'included': ['/sample_set_ref']}]})['data'][0]['data']['sample_set_ref']
 
         if(sampleset_ref1 != sampleset_ref2):
             raise Exception("Variation objects are from different sample set\n")
@@ -179,7 +179,7 @@ class kb_ReadSim:
         assembly_ref_set = set()
         genomeset_ref_set = set()
 
-        variation_obj1 = self.ws.get_objects2({'objects': [{'ref': var_object1_ref}]})['data'][0]
+        variation_obj1 = self.ws.get_objects2({'objects': [{'ref': var_object_ref1}]})['data'][0]
 
         if 'assembly_ref' in variation_obj1['data']:
             assembly_ref1 = variation_obj1['data']['assembly_ref']
@@ -188,7 +188,7 @@ class kb_ReadSim:
             genome_ref1 = variation_obj1['data']['genome_ref']
             genomeset_ref_set.add(genome_ref1)
 
-        variation_obj2 = self.ws.get_objects2({'objects': [{'ref': var_object2_ref}]})['data'][0]
+        variation_obj2 = self.ws.get_objects2({'objects': [{'ref': var_object_ref2}]})['data'][0]
         if 'assembly_ref' in variation_obj2['data']:
             assembly_ref2 = variation_obj2['data']['assembly_ref']
             assembly_ref_set.add(assembly_ref2)
@@ -204,27 +204,27 @@ class kb_ReadSim:
             raise Exception("variation objects are from different genome set refs")
 
         simvarfile = os.path.join(report_dir, "simvarinat.vcf.gz")
-        simvarpath = self.du.download_variations(var_object1_ref, simvarfile)
+        simvarpath = self.du.download_variations(var_object_ref1, simvarfile)
         os.rename(simvarpath, simvarfile)
         self.eu.index_vcf(simvarfile)
 
         callingvarfile = os.path.join(report_dir, "callingvarinat.vcf.gz")
-        callingvarpath = self.du.download_variations(var_object2_ref, callingvarfile)
+        callingvarpath = self.du.download_variations(var_object_ref2, callingvarfile)
         os.rename(callingvarpath, callingvarfile)
         self.eu.index_vcf(callingvarfile)
 
         eval_results = self.eu.variant_evalation(simvarfile, callingvarfile, report_dir)
 
-        unique1_vcf = eval_results['unique1']
-        self.eu.check_path_exists(unique1_vcf)
+        unique_vcf1 = eval_results['unique1']
+        self.eu.check_path_exists(unique_vcf1)
 
-        unique2_vcf = eval_results['unique2']
-        self.eu.check_path_exists(unique2_vcf)
+        unique_vcf2 = eval_results['unique2']
+        self.eu.check_path_exists(unique_vcf2)
 
         common_vcf = eval_results['common']
         self.eu.check_path_exists(common_vcf)
 
-        image_path = self.eu.plot_venn_diagram(report_dir, unique1_vcf, unique2_vcf, common_vcf)
+        image_path = self.eu.plot_venn_diagram(report_dir, unique_vcf1, unique_vcf2, common_vcf)
         self.eu.check_path_exists(image_path)
 
         if(len(assembly_ref_set) != 0):
@@ -237,7 +237,7 @@ class kb_ReadSim:
                                         'genome_or_assembly_ref': assembly_or_genome_ref,
                                         'sample_set_ref': sampleset_ref1,
                                         'sample_attribute_name': 'sample_unique_attr1',
-                                        'vcf_staging_file_path': unique1_vcf,
+                                        'vcf_staging_file_path': unique_vcf1,
                                         'variation_object_name': params['output_variant_object'] + "_sample1_unique"
         }
         self.vu.save_variation_from_vcf(save_unique_variation_params1)
@@ -248,7 +248,7 @@ class kb_ReadSim:
                                         'genome_or_assembly_ref': assembly_or_genome_ref,
                                         'sample_set_ref': sampleset_ref1,
                                         'sample_attribute_name': 'sample_unique_attr2',
-                                        'vcf_staging_file_path': unique2_vcf,
+                                        'vcf_staging_file_path': unique_vcf2,
                                         'variation_object_name': params['output_variant_object'] + "_sample2_unique"
         }
         self.vu.save_variation_from_vcf(save_unique_variation_params2)

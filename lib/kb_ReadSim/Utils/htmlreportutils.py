@@ -16,7 +16,7 @@ class htmlreportutils:
 
         output = "<html><head></head><body>"
         output += "<h2>Vein Diagram</h2>"
-        output += "<img src=" + os.path.join(output_dir,"venn_diagram.png") + " width=\"600\" height=\"600\">"
+        output += "<img src=venn_diagram.png width=\"800\" height=\"600\">"
         output += "</body></html>"
         return output
 
@@ -32,7 +32,7 @@ class htmlreportutils:
         dfu = DataFileUtil(callback_url)
         report_name = 'kb_variant_report_' + str(uuid.uuid4())
         report = KBaseReport(callback_url)
-        index_file_path = output_dir + "/venn_diagram.png"
+        index_file_path = "./venn_diagram.png"
         htmlstring = self.import_image(output_dir)
 
         try:

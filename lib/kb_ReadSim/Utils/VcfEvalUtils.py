@@ -58,13 +58,13 @@ class VcfEvalUtils:
         cmd.extend(["-p", output_dir])
         self.ru.run_cmd(cmd)
 
-        unique1_vcf = os.path.join(output_dir, '0000.vcf')
-        unique2_vcf = os.path.join(output_dir, '0001.vcf')
+        unique_vcf1 = os.path.join(output_dir, '0000.vcf')
+        unique_vcf2 = os.path.join(output_dir, '0001.vcf')
         common_vcf = os.path.join(output_dir, "0002.vcf")
 
         eval_results = { "common" : common_vcf,
-                        "unique1": unique1_vcf,
-                        "unique2": unique2_vcf
+                        "unique1": unique_vcf1,
+                        "unique2": unique_vcf2
         }
 
         return eval_results
@@ -73,15 +73,15 @@ class VcfEvalUtils:
         if (not path.exists(file)):
             raise Exception(file  + "does not exist")
 
-    def plot_venn_diagram(self, output_dir, unique1_file, unique2_file, common_file):
+    def plot_venn_diagram(self, output_dir, unique_file1, unique_file2, common_file):
         '''
         funciotn for plotting venn diagram
         :param output_dir:
         :return: venn-diagram image file path
         '''
 
-        unique1 = subprocess.check_output("cat " + unique1_file + " | grep -v -c '#' | awk '{print $1}'", shell=True)
-        unique2 = subprocess.check_output("cat " + unique2_file + " | grep -v -c '#' | awk '{print $1}'", shell=True)
+        unique1 = subprocess.check_output("cat " + unique_file1 + " | grep -v -c '#' | awk '{print $1}'", shell=True)
+        unique2 = subprocess.check_output("cat " + unique_file2 + " | grep -v -c '#' | awk '{print $1}'", shell=True)
         common = subprocess.check_output("cat " + common_file + " | grep -v -c '#' | awk '{print $1}'", shell=True)
 
         A = int(unique1.rstrip())
