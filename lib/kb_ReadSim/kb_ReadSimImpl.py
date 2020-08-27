@@ -234,7 +234,7 @@ class kb_ReadSim:
         self.eu.check_path_exists(common_vcf)
 
         image_path = self.eu.plot_venn_diagram(report_dir, unique_vcf1, unique_vcf2, common_vcf)
-        self.check_path_exists(image_path)
+        self.eu.check_path_exists(image_path)
 
         if(len(assembly_ref_set) != 0):
             assembly_or_genome_ref = assembly_ref_set.pop()
