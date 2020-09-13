@@ -236,6 +236,7 @@ class kb_ReadSim:
         image_path = self.eu.plot_venn_diagram(report_dir, unique_vcf1, unique_vcf2, common_vcf)
         self.eu.check_path_exists(image_path)
 
+        '''
         if(len(assembly_ref_set) != 0):
             assembly_or_genome_ref = assembly_ref_set.pop()
         elif(len(genomeset_ref_set) != 0):
@@ -273,6 +274,7 @@ class kb_ReadSim:
         }
         self.vu.save_variation_from_vcf(save_common_variation_params)
         logging.info("Saving done\n")
+        '''
 
         workspace = params['workspace_name']
         output = self.hu.create_html_report(self.callback_url, report_dir, workspace)
