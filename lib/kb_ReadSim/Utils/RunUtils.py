@@ -7,12 +7,13 @@ class RunUtils:
         pass
 
     def run_cmd(self, cmd):
-        """
+        '''
         This function runs a third party command line tool
         eg. bgzip etc.
         :param command: command to be run
         :return: success
-        """
+        '''
+
         command = " ".join(cmd)
         print(command)
         logging.info("Running command " + command)

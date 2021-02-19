@@ -31,6 +31,7 @@ class VcfEvalUtils:
         :param vcf_file:
         :return: bgzipped vcf file
         '''
+
         bgzip_cmd = ["bgzip"]
         bgzip_cmd.extend(["-c", vcf_file])
         outfile = vcf_file + ".gz"
@@ -58,6 +59,7 @@ class VcfEvalUtils:
         :param output_dir:
         :return: eval_results
         '''
+
         cmd = ["bcftools", "isec"]
         cmd.append(simvar_file)
         cmd.append(callig_varfile)
@@ -95,9 +97,7 @@ class VcfEvalUtils:
         AB = int(common.rstrip())
 
         venn2(subsets=(A, B, AB), set_labels=('Variation 1', 'Variation 2'))
-
         image_path = os.path.join(output_dir, 'venn_diagram.png')
-
         plt.savefig(image_path)
 
         return image_path

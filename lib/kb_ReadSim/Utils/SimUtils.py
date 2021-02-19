@@ -71,6 +71,7 @@ class SimUtils:
         :param logfile:
         :return: vcf log file
         '''
+
         vcf_file = "/kb/module/work/tmp/log.vcf"     #Hardcoded path
 
         alt_map = { "A" : "A",
@@ -104,9 +105,7 @@ class SimUtils:
                             rec  = line.split("\t")
                             if(rec[3] in alt_map):
                                 alt_list = alt_map[rec[3]].split(",")
-                               # print (alt_list)
                                 alt_str = ",".join(list(set(alt_list) - set([rec[2]])))
-
                                 vcf_out.write(rec[0] + "\t" + rec[1] + "\t.\t" + rec[2] + "\t" + alt_str + "\t25\tPASS\tDP=14\tGT\t1/1\n" )
                             else:
                                 vcf_out.write(rec[0] + "\t" + rec[1] + "\t.\t" + rec[2] + "\t" + rec[3] + "\t25\tPASS\tDP=14\tGT\t1/1\n")
